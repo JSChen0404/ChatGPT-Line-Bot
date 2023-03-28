@@ -1,4 +1,8 @@
 db.json
+poetry.lock
+pyproject.toml
+poetry.lock
+replit.nix
 
 # Logs
 .DS_Store
