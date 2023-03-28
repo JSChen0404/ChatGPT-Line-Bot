@@ -1,7 +1,5 @@
 # ChatGPT Line Bot
 
-中文 | [English](README.en.md)
-
 [![license](https://img.shields.io/pypi/l/ansicolortags.svg)](LICENSE) [![Release](https://img.shields.io/github/v/release/TheExplainthis/ChatGPT-Line-Bot)](https://github.com/TheExplainthis/ChatGPT-Line-Bot/releases/)
 
 
