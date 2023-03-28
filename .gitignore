@@ -3,6 +3,7 @@ poetry.lock
 pyproject.toml
 poetry.lock
 replit.nix
+.replit
 
 # Logs
 .DS_Store
