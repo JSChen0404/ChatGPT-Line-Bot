@@ -17,7 +17,8 @@ class ChatGPT:
     self.presence_penalty = float(
       os.getenv("OPENAI_PRESENCE_PENALTY", default=0.6))
     self.max_tokens = int(os.getenv("OPENAI_MAX_TOKENS", default=240))
-
+    self.top_p = int(os.getenv("TOP_P", default=1.0))
+    
   def get_response(self):
     response = openai.Completion.create(
       model=self.model,
@@ -30,3 +31,16 @@ class ChatGPT:
 
   def add_msg(self, text):
     self.prompt.add_msg(text)
+
+  def response_explain_code(self) -> str:
+    response = openai.Completion.create(
+      model=self.model,
+      prompt=self.prompt.generate_explain_code_prompt(),
+      temperature=self.temperature,
+      top_p=self.top_p,
+      frequency_penalty=self.frequency_penalty,
+      presence_penalty=0.0,
+      max_tokens=self.max_tokens,
+      stop=["\"\"\""])
+    return response['choices'][0]['text'].strip()
+

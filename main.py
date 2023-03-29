@@ -91,10 +91,25 @@ def handle_text_message(event):
       url = response['data'][0]['url']
       msg = ImageSendMessage(original_content_url=url, preview_image_url=url)
       memory.append(user_id, 'assistant', url)
-
+      
+    elif text.startswith('/解釋語法'):
+      prompt = text[5:].strip()
+      memory.append(user_id, 'user', prompt)  
+      if working_status:
+        chatgpt.add_msg(f"HUMAN:{prompt}?\n") #chatgpt是一個Prompt class
+        response = chatgpt.response_explain_code().replace("AI:", "", 1) #
+        chatgpt.add_msg(f"AI:{response}\n")  #把AI的回覆先貼進去
+          
+      msg = TextSendMessage(text=response)
+      
     else: #開始正常對話
-      user_model = model_management[user_id]
+      user_model = model_management[user_id] #呼叫OpenAIModel class
       memory.append(user_id, 'user', text)
+      # print(memory.storage) : 
+      # {'U9033841fbbfe66347373576c24ca6e8a': [{'role': 'system',
+      #          'content': 'You are a helpful assistant.'},
+      #         {'role': 'user',
+      #          'content': 'tell me the advantage od exercise.'}]})
       url = website.get_url_from_text(text)
       if url:
         if youtube.retrieve_video_id(text):
@@ -131,11 +146,10 @@ def handle_text_message(event):
         role, response = get_role_and_content(response)
      
         if working_status:
-          chatgpt.add_msg(f"HUMAN:{event.message.text}?\n")
+          chatgpt.add_msg(f"HUMAN:{event.message.text}?\n") #chatgpt是一個Prompt class
           response = chatgpt.get_response().replace("AI:", "", 1) #
-          chatgpt.add_msg(f"AI:{response}\n")
+          chatgpt.add_msg(f"AI:{response}\n")  #把AI的回覆先貼進去
           
-        #print('ai_response = ', response)
         msg = TextSendMessage(text=response)
       memory.append(user_id, role, response)
   # 以下區塊處理例外
@@ -210,7 +224,7 @@ if __name__ == "__main__":
   try:
     data = storage.load()
     for user_id in data.keys(): 
-      model_management[user_id] = OpenAIModel(api_key=os.getenv("OPENAI_API_KEY"))
+      model_management[user_id] = OpenAIModel(api_key=os.getenv("OPENAI_API_KEY")) #創造一個OpenAIModel class 
   except FileNotFoundError:
     pass
   app.run(host='0.0.0.0', port=8080)

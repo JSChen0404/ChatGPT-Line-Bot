@@ -48,7 +48,11 @@ class OpenAIModel(ModelInterface):
             'messages': messages
         }
         return self._request('POST', '/chat/completions', body=json_body)
-
+        # example:
+        # {
+        #   "model": "gpt-3.5-turbo",
+        #   "messages": [{"role": "user", "content": "Hello!"}]
+        # }
     def audio_transcriptions(self, file_path, model_engine) -> str:
         files = {
             'file': open(file_path, 'rb'),
@@ -63,4 +67,6 @@ class OpenAIModel(ModelInterface):
             "size": "512x512"
         }
         return self._request('POST', '/images/generations', body=json_body)
+
+
 

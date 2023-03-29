@@ -22,3 +22,11 @@ class Prompt:
 
   def generate_prompt(self):
     return '\n'.join(self.msg_list)
+    
+  def generate_explain_code_prompt(self):
+    explain_code_suffix = '\n\n\"\"\"\nHere is what the above class is doing, explained in a concise way:\n1.'
+    print('msg_list=', self.msg_list)
+    self.msg_list.append(explain_code_suffix)
+    print('combine_suffix=', self.msg_list)    
+    return '\n'.join(self.msg_list)
+    
