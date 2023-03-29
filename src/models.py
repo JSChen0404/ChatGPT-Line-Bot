@@ -63,3 +63,4 @@ class OpenAIModel(ModelInterface):
             "size": "512x512"
         }
         return self._request('POST', '/images/generations', body=json_body)
+
